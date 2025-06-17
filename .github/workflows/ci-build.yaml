@@ -22,7 +22,7 @@ permissions: { }
 
 jobs:
   call-build:
-    uses: ./.github/workflows/_meta-build.yaml
+    uses: ./.github/workflows/ci-libs.yml
     with:
       app-version: "snapshot"
       publish-container: ${{ github.ref_name == 'master' || startsWith(github.ref_name, 'feature-') }}
