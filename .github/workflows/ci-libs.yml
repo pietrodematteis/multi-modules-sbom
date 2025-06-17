@@ -38,15 +38,6 @@ jobs:
           java-version: '21'
           cache: 'maven'
           
-      - name: Generate SBOM using cdxgen container
-        run: |
-          docker run --rm \
-            -v "$(pwd)":/app:rw \
-            -v /tmp:/tmp \
-            -t ghcr.io/cyclonedx/cdxgen:latest \
-            -r /app -o ./bom.json -t java \
-            --profile license-compliance --json-pretty
-          
       - name: Build with Maven
         run: |-
           mvn -B package
@@ -57,4 +48,24 @@ jobs:
           name: assembled-wars
           path: |-
             target/*.jar
+  sbom:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # tag=v4.2.2
+
+      - name: Generate SBOM using cdxgen container
+        run: |
+          docker run --rm \
+            -v "$(pwd)":/app:rw \
+            -v /tmp:/tmp \
+            -t ghcr.io/cyclonedx/cdxgen:latest \
+            -r /app -o ./bom.json -t java \
+            --profile license-compliance --json-pretty
+          
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # tag=v4.6.2
+        with:
+          name: sbom
+          path: |-
             bom.json
