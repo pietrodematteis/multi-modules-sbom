@@ -16,6 +16,11 @@ on:
         type: string
         required: true
         description: "Short ref name of the branch or tag that triggered the workflow run"
+      generate-sbom:
+        type: boolean
+        required: false
+        default: false
+        description: "generate sbom"
     secrets:
       registry-0-usr:
         required: true
@@ -50,6 +55,7 @@ jobs:
             target/*.jar
   sbom:
     runs-on: ubuntu-latest
+    if: generate-sbom
     permissions:
       contents: read
       packages: write
