@@ -54,8 +54,8 @@ jobs:
           path: |-
             target/*.jar
   sbom:
+    if: ${{ inputs.generate-sbom }}
     runs-on: ubuntu-latest
-    if: generate-sbom
     permissions:
       contents: read
       packages: write
