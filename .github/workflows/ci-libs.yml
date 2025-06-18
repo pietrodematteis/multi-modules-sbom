@@ -54,11 +54,8 @@ jobs:
           path: |-
             target/*.jar
   sbom:
-    if: ${{ inputs.generate-sbom }}
+    if: ${{ inputs.generate-sbom }} #conditional running
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
     steps:
       - name: Checkout Repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # tag=v4.2.2
